@@ -137,7 +137,7 @@ static int gpio_keys_interrupt_configure(const struct gpio_dt_spec *gpio_spec,
 		return ret;
 	}
 
-	cb->pin_state = -1;
+	cb->pin_state = gpio_pin_get_dt(gpio_spec);
 
 	LOG_DBG("port=%s, pin=%d", gpio_spec->port->name, gpio_spec->pin);
 
