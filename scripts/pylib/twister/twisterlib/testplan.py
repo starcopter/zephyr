@@ -436,6 +436,7 @@ class TestPlan:
                             # cmake/modules/extensions.cmake.
                             revision_patterns = ["[A-Z]",
                                                     "[0-9]+",
+                                                    "([A-Z])_(0|[1-9][0-9]*)",
                                                     "(0|[1-9][0-9]*)(_[0-9]+)*(_[0-9]+)*"]
 
                             for pattern in revision_patterns:
