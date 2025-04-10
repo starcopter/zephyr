@@ -226,7 +226,7 @@ unlock:
 int can_mcan_set_timing_data(const struct device *dev, const struct can_timing *timing_data)
 {
 	struct can_mcan_data *data = dev->data;
-	uint32_t dbtp = 0U;
+	uint32_t dbtp;
 	int err;
 
 	if (data->common.started) {
@@ -234,6 +234,14 @@ int can_mcan_set_timing_data(const struct device *dev, const struct can_timing *
 	}
 
 	k_mutex_lock(&data->lock, K_FOREVER);
+
+	err = can_mcan_read_reg(dev, CAN_MCAN_DBTP, &dbtp);
+	if (err != 0) {
+		goto unlock;
+	}
+
+	dbtp &= ~(CAN_MCAN_DBTP_DBRP | CAN_MCAN_DBTP_DTSEG1 | CAN_MCAN_DBTP_DTSEG2 |
+		  CAN_MCAN_DBTP_DSJW);
 
 	dbtp |= FIELD_PREP(CAN_MCAN_DBTP_DSJW, timing_data->sjw - 1UL) |
 		FIELD_PREP(CAN_MCAN_DBTP_DTSEG1, timing_data->phase_seg1 - 1UL) |
